@@ -5,10 +5,10 @@ import { useState, useEffect } from 'react';
 import { storage } from '@/lib/storage';
 import { User } from '@/lib/data';
 import { Modal } from '@/components/Modal';
-import { LogIn, UserPlus, Shield, ChevronRight, BookOpen, Zap, Award } from 'lucide-react';
+import { LogIn, UserPlus, Shield, ChevronRight } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import Image from 'next/image';
-import { motion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 
 export default function LandingPage() {
   const [isLoginOpen, setIsLoginOpen] = useState(false);
@@ -67,292 +67,180 @@ export default function LandingPage() {
     router.push('/dashboard');
   };
 
-  const containerVariants = {
-    hidden: { opacity: 0 },
-    visible: {
-      opacity: 1,
-      transition: { staggerChildren: 0.1, delayChildren: 0.1 }
-    }
-  };
-
-  const itemVariants = {
-    hidden: { opacity: 0, y: 20 },
-    visible: { opacity: 1, y: 0, transition: { duration: 0.8 } }
-  };
-
   return (
-    <div className="bg-white overflow-hidden">
-      {/* Navigation */}
-      <nav className="fixed top-0 left-0 right-0 z-50 bg-white/80 backdrop-blur-md border-b border-gray-100">
-        <div className="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            className="text-xl font-semibold text-gray-900"
-          >
-            CALE
-          </motion.div>
-          <div className="hidden md:flex items-center gap-8">
-            <button
-              onClick={() => { setIsLoginOpen(true); setIsAdminMode(false); setError(''); }}
-              className="text-gray-600 hover:text-gray-900 transition-colors font-medium"
-            >
-              Iniciar Sesión
-            </button>
-            <button
-              onClick={() => { setIsRegisterOpen(true); setError(''); }}
-              className="px-6 py-2 bg-gray-900 text-white rounded-lg hover:bg-gray-800 transition-all font-medium"
-            >
-              Registrarse
-            </button>
+    <div className="min-h-screen bg-white text-[#1d1d1f] flex flex-col items-center">
+      {/* Navigation (Apple Style) */}
+      <nav className="w-full h-12 glass fixed top-0 z-[100] flex items-center justify-center border-b border-[#d2d2d7]/30">
+        <div className="max-w-[1024px] w-full px-6 flex justify-between items-center">
+          <div className="flex items-center gap-1 font-semibold text-sm opacity-90">
+            <Shield size={16} className="text-[#0071e3]" />
+            <span>Sin Fronteras</span>
           </div>
+          <button
+            onClick={() => { setIsLoginOpen(true); setIsAdminMode(false); setError(''); }}
+            className="text-xs font-medium text-[#0071e3] hover:underline"
+          >
+            Iniciar Sesión
+          </button>
         </div>
       </nav>
 
-      {/* Hero Section */}
-      <section className="pt-32 pb-20 px-6">
+      <main className="w-full max-w-[1024px] px-6 pt-32 pb-20 flex flex-col items-center">
+        {/* Hero Section */}
         <motion.div
-          className="max-w-4xl mx-auto text-center space-y-8"
-          variants={containerVariants}
-          initial="hidden"
-          animate="visible"
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8, ease: [0.2, 0.8, 0.2, 1] }}
+          className="text-center flex flex-col items-center"
         >
-          <motion.div variants={itemVariants}>
-            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-blue-50 border border-blue-200 text-blue-700 text-sm font-semibold mb-6">
-              <Zap size={16} />
-              Plataforma de Evaluación CALE
-            </div>
-          </motion.div>
+          <div className="mb-12 relative w-48 h-20 md:w-64 md:h-28">
+            <Image src="/logo.jpg" alt="Logo Sin Fronteras" fill className="object-contain" priority />
+          </div>
 
-          <motion.h1
-            variants={itemVariants}
-            className="text-5xl md:text-7xl font-bold text-gray-900 leading-tight tracking-tight"
-          >
-            Domina tu examen de
-            <span className="block text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-blue-400">
-              conducción
-            </span>
-          </motion.h1>
+          <h1 className="text-apple-hero mb-6 tracking-tight">
+            Conduce tu <span className="text-[#0071e3]">futuro</span>.
+          </h1>
 
-          <motion.p
-            variants={itemVariants}
-            className="text-xl text-gray-600 max-w-2xl mx-auto leading-relaxed"
-          >
-            Prepárate para obtener tu licencia de conducción con nuestra plataforma interactiva. Categorías A2, B1 y C1 con evaluaciones completas y análisis detallado de resultados.
-          </motion.p>
+          <p className="text-[21px] md:text-[24px] text-[#86868b] leading-tight mb-10 max-w-2xl font-normal">
+            La plataforma líder de evaluación para conductores.<br className="hidden md:block" />
+            Certificaciones A2, B1 y C1 con tecnología de vanguardia.
+          </p>
 
-          <motion.div
-            variants={itemVariants}
-            className="flex flex-col sm:flex-row gap-4 justify-center pt-4"
-          >
-            <button
+          <div className="flex flex-col md:flex-row items-center gap-6 mb-16">
+            <motion.button
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.98 }}
               onClick={() => { setIsRegisterOpen(true); setError(''); }}
-              className="px-8 py-4 bg-gray-900 text-white rounded-lg hover:bg-gray-800 transition-all font-semibold text-lg shadow-xl hover:shadow-2xl transform hover:scale-105"
+              className="apple-button-primary text-[17px] px-8 py-3"
             >
-              Comenzar Ahora
-            </button>
+              Comenzar ahora
+            </motion.button>
             <button
               onClick={() => { setIsLoginOpen(true); setIsAdminMode(false); setError(''); }}
-              className="px-8 py-4 bg-gray-100 text-gray-900 rounded-lg hover:bg-gray-200 transition-all font-semibold text-lg"
+              className="apple-button-secondary"
             >
-              Iniciar Sesión
+              Ya tengo una cuenta <ChevronRight size={18} className="chevron-icon" />
             </button>
-          </motion.div>
-        </motion.div>
-      </section>
-
-      {/* Stats Section */}
-      <section className="py-20 px-6 border-t border-gray-100">
-        <motion.div
-          className="max-w-4xl mx-auto grid md:grid-cols-3 gap-12"
-          initial={{ opacity: 0 }}
-          whileInView={{ opacity: 1 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.8 }}
-        >
-          <motion.div
-            className="text-center"
-            whileHover={{ y: -5 }}
-            transition={{ duration: 0.3 }}
-          >
-            <div className="text-4xl md:text-5xl font-bold text-gray-900 mb-2">40+</div>
-            <p className="text-gray-600 font-medium">Preguntas por categoría</p>
-          </motion.div>
-          <motion.div
-            className="text-center"
-            whileHover={{ y: -5 }}
-            transition={{ duration: 0.3 }}
-          >
-            <div className="text-4xl md:text-5xl font-bold text-gray-900 mb-2">3</div>
-            <p className="text-gray-600 font-medium">Niveles de dificultad</p>
-          </motion.div>
-          <motion.div
-            className="text-center"
-            whileHover={{ y: -5 }}
-            transition={{ duration: 0.3 }}
-          >
-            <div className="text-4xl md:text-5xl font-bold text-gray-900 mb-2">100%</div>
-            <p className="text-gray-600 font-medium">Análisis de resultados</p>
-          </motion.div>
-        </motion.div>
-      </section>
-
-      {/* Features Section */}
-      <section className="py-20 px-6">
-        <motion.div
-          className="max-w-4xl mx-auto"
-          initial={{ opacity: 0 }}
-          whileInView={{ opacity: 1 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.8 }}
-        >
-          <h2 className="text-4xl font-bold text-gray-900 text-center mb-16">
-            Todo lo que necesitas
-          </h2>
-
-          <div className="grid md:grid-cols-3 gap-8">
-            {[
-              {
-                icon: BookOpen,
-                title: 'Preguntas Reales',
-                description: 'Basadas en exámenes oficiales de conducción'
-              },
-              {
-                icon: Award,
-                title: 'Certificación',
-                description: 'Obtén reportes detallados de tu desempeño'
-              },
-              {
-                icon: Zap,
-                title: 'Análisis Inteligente',
-                description: 'Identifica tus áreas débiles y mejora'
-              }
-            ].map((feature, i) => (
-              <motion.div
-                key={i}
-                className="p-8 rounded-2xl bg-gray-50 border border-gray-100 hover:border-gray-200 transition-all"
-                whileHover={{ y: -10, boxShadow: '0 20px 40px rgba(0,0,0,0.1)' }}
-                transition={{ duration: 0.3 }}
-              >
-                <feature.icon className="w-12 h-12 text-blue-600 mb-4" />
-                <h3 className="text-xl font-semibold text-gray-900 mb-2">
-                  {feature.title}
-                </h3>
-                <p className="text-gray-600">{feature.description}</p>
-              </motion.div>
-            ))}
           </div>
         </motion.div>
-      </section>
 
-      {/* CTA Section */}
-      <section className="py-20 px-6 bg-gray-900 text-white">
+        {/* Categories / Features (Minimalist Grid) */}
         <motion.div
-          className="max-w-3xl mx-auto text-center space-y-8"
           initial={{ opacity: 0 }}
           whileInView={{ opacity: 1 }}
           viewport={{ once: true }}
+          transition={{ delay: 0.4, duration: 1 }}
+          className="grid grid-cols-1 md:grid-cols-3 gap-8 w-full mt-10"
         >
-          <h2 className="text-4xl md:text-5xl font-bold">
-            ¿Listo para empezar?
-          </h2>
-          <p className="text-xl text-gray-300">
-            Únete a miles de estudiantes que ya aprobaron su examen CALE
-          </p>
-          <button
-            onClick={() => { setIsRegisterOpen(true); setError(''); }}
-            className="px-8 py-4 bg-white text-gray-900 rounded-lg hover:bg-gray-100 transition-all font-semibold text-lg inline-block"
-          >
-            Registrarse Gratis
-          </button>
+          {[
+            { tag: 'Motos', cat: 'A2', desc: 'Evaluación técnica para cilindrada superior a 125cc.' },
+            { tag: 'Autos', cat: 'B1', desc: 'Examen teórico-práctico para vehículos particulares.' },
+            { tag: 'Servicio', cat: 'C1', desc: 'Certificación profesional para transporte público.' }
+          ].map((item, i) => (
+            <div key={i} className="bg-[#f5f5f7] p-8 rounded-[24px] border border-[#d2d2d7]/50 flex flex-col gap-4">
+              <span className="text-[12px] font-bold text-[#86868b] uppercase tracking-wider">{item.tag}</span>
+              <h3 className="text-[28px] font-semibold">{item.cat}</h3>
+              <p className="text-[#86868b] leading-relaxed">{item.desc}</p>
+            </div>
+          ))}
         </motion.div>
-      </section>
+      </main>
 
-      {/* Footer */}
-      <footer className="py-8 px-6 border-t border-gray-100">
-        <div className="max-w-4xl mx-auto flex flex-col md:flex-row items-center justify-between gap-4">
-          <p className="text-gray-600 text-sm">© 2026 CALE - Escuela Sin Fronteras</p>
-          <button
-            onClick={() => { setIsLoginOpen(true); setIsAdminMode(true); setError(''); }}
-            className="text-gray-400 hover:text-gray-600 transition-colors text-sm font-medium flex items-center gap-1 group"
-          >
-            Acceso Admin <ChevronRight size={14} className="group-hover:translate-x-1 transition-transform" />
-          </button>
+      <footer className="w-full bg-[#f5f5f7] border-t border-[#d2d2d7] py-16 flex flex-col items-center">
+        <div className="max-w-[1024px] w-full px-6 flex flex-col md:flex-row justify-between items-center gap-8 opacity-60">
+          <p className="text-[12px]">Copyright © 2024 Escuela Sin Fronteras. Todos los derechos reservados.</p>
+          <div className="flex gap-6 text-[12px]">
+            <button onClick={() => { setIsLoginOpen(true); setIsAdminMode(true); setError(''); }}>Admin Console</button>
+            <span>Privacy Policy</span>
+            <span>Terms of Use</span>
+          </div>
         </div>
       </footer>
 
-      {/* Login Modal */}
-      <Modal
-        isOpen={isLoginOpen}
-        onClose={() => setIsLoginOpen(false)}
-        title={isAdminMode ? 'Acceso Administrador' : 'Bienvenido de nuevo'}
-      >
-        <form onSubmit={handleLogin} className="space-y-4">
-          {error && <div className="p-3 bg-red-50 text-red-600 text-sm rounded-lg border border-red-100">{error}</div>}
-          <div>
-            <label className="block text-sm font-medium text-gray-900 mb-1">Correo Electrónico</label>
-            <input
-              type="email" required
-              value={email} onChange={(e) => setEmail(e.target.value)}
-              className="w-full px-4 py-3 rounded-lg border border-gray-200 focus:ring-2 focus:ring-gray-900 outline-none transition-all"
-              placeholder="correo@ejemplo.com"
+      {/* Modals with Clean Style */}
+      <AnimatePresence>
+        {(isLoginOpen || isRegisterOpen) && (
+          <div className="fixed inset-0 z-[200] flex items-center justify-center p-6">
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              onClick={() => { setIsLoginOpen(false); setIsRegisterOpen(false); }}
+              className="absolute inset-0 bg-black/40 backdrop-blur-sm"
             />
-          </div>
-          <div>
-            <label className="block text-sm font-medium text-gray-900 mb-1">Contraseña</label>
-            <input
-              type="password" required
-              value={password} onChange={(e) => setPassword(e.target.value)}
-              className="w-full px-4 py-3 rounded-lg border border-gray-200 focus:ring-2 focus:ring-gray-900 outline-none transition-all"
-              placeholder="••••••••"
-            />
-          </div>
-          <button className="w-full py-3 bg-gray-900 hover:bg-gray-800 text-white rounded-lg font-semibold transition-all mt-4">
-            Ingresar
-          </button>
-        </form>
-      </Modal>
 
-      {/* Register Modal */}
-      <Modal
-        isOpen={isRegisterOpen}
-        onClose={() => setIsRegisterOpen(false)}
-        title="Crear Nueva Cuenta"
-      >
-        <form onSubmit={handleRegister} className="space-y-4">
-          {error && <div className="p-3 bg-red-50 text-red-600 text-sm rounded-lg border border-red-100">{error}</div>}
-          <div>
-            <label className="block text-sm font-medium text-gray-900 mb-1">Nombre Completo</label>
-            <input
-              type="text" required
-              value={name} onChange={(e) => setName(e.target.value)}
-              className="w-full px-4 py-3 rounded-lg border border-gray-200 focus:ring-2 focus:ring-gray-900 outline-none transition-all"
-              placeholder="Juan Perez"
-            />
+            <motion.div
+              initial={{ scale: 0.95, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              exit={{ scale: 0.95, opacity: 0 }}
+              className="relative w-full max-w-md bg-white rounded-[28px] p-10 shadow-2xl"
+            >
+              <h2 className="text-[32px] font-semibold mb-8 text-center tracking-tight">
+                {isLoginOpen ? (isAdminMode ? 'Admin Portal' : 'Bienvenido') : 'Nueva Cuenta'}
+              </h2>
+
+              <form onSubmit={isLoginOpen ? handleLogin : handleRegister} className="space-y-6">
+                {error && <div className="p-4 bg-red-50 text-red-600 text-[14px] rounded-xl border border-red-100 mb-6">{error}</div>}
+
+                {!isLoginOpen && (
+                  <div className="space-y-2">
+                    <label className="text-[12px] font-medium text-[#86868b] ml-1">Nombre Completo</label>
+                    <input
+                      type="text" required
+                      value={name} onChange={(e) => setName(e.target.value)}
+                      className="w-full px-4 py-3 bg-[#f5f5f7] border border-[#d2d2d7] rounded-xl focus:ring-2 focus:ring-[#0071e3] outline-none transition-all"
+                      placeholder="Juan Perez"
+                    />
+                  </div>
+                )}
+
+                <div className="space-y-2">
+                  <label className="text-[12px] font-medium text-[#86868b] ml-1">Correo Electrónico</label>
+                  <input
+                    type="email" required
+                    value={email} onChange={(e) => setEmail(e.target.value)}
+                    className="w-full px-4 py-3 bg-[#f5f5f7] border border-[#d2d2d7] rounded-xl focus:ring-2 focus:ring-[#0071e3] outline-none transition-all"
+                    placeholder="name@example.com"
+                  />
+                </div>
+
+                <div className="space-y-2">
+                  <label className="text-[12px] font-medium text-[#86868b] ml-1">Contraseña</label>
+                  <input
+                    type="password" required
+                    value={isLoginOpen ? password : registerPassword}
+                    onChange={(e) => isLoginOpen ? setPassword(e.target.value) : setRegisterPassword(e.target.value)}
+                    className="w-full px-4 py-3 bg-[#f5f5f7] border border-[#d2d2d7] rounded-xl focus:ring-2 focus:ring-[#0071e3] outline-none transition-all"
+                    placeholder="••••••••"
+                  />
+                </div>
+
+                <button className="apple-button-primary w-full py-4 mt-4 text-[17px]">
+                  {isLoginOpen ? 'Continuar' : 'Crear cuenta'}
+                </button>
+
+                <p
+                  className="text-center text-[14px] text-[#0071e3] cursor-pointer hover:underline"
+                  onClick={() => {
+                    setIsLoginOpen(!isLoginOpen);
+                    setIsRegisterOpen(!isRegisterOpen);
+                    setError('');
+                  }}
+                >
+                  {isLoginOpen ? '¿No tienes cuenta? Registrate' : '¿Ya tienes cuenta? Ingresa'}
+                </p>
+              </form>
+
+              <button
+                onClick={() => { setIsLoginOpen(false); setIsRegisterOpen(false); }}
+                className="absolute top-6 right-6 text-[#86868b] hover:text-[#1d1d1f]"
+              >
+                ✕
+              </button>
+            </motion.div>
           </div>
-          <div>
-            <label className="block text-sm font-medium text-gray-900 mb-1">Correo Electrónico</label>
-            <input
-              type="email" required
-              value={email} onChange={(e) => setEmail(e.target.value)}
-              className="w-full px-4 py-3 rounded-lg border border-gray-200 focus:ring-2 focus:ring-gray-900 outline-none transition-all"
-              placeholder="correo@ejemplo.com"
-            />
-          </div>
-          <div>
-            <label className="block text-sm font-medium text-gray-900 mb-1">Contraseña</label>
-            <input
-              type="password" required
-              value={registerPassword} onChange={(e) => setRegisterPassword(e.target.value)}
-              className="w-full px-4 py-3 rounded-lg border border-gray-200 focus:ring-2 focus:ring-gray-900 outline-none transition-all"
-              placeholder="••••••••"
-            />
-          </div>
-          <button className="w-full py-3 bg-gray-900 hover:bg-gray-800 text-white rounded-lg font-semibold transition-all mt-4">
-            Empezar Evaluación
-          </button>
-        </form>
-      </Modal>
+        )}
+      </AnimatePresence>
     </div>
   );
 }
